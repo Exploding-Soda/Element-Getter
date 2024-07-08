@@ -1,38 +1,32 @@
-document.addEventListener('DOMContentLoaded', function () {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     chrome.scripting.executeScript(
       {
         target: { tabId: tabs[0].id },
-        function: getPrestyleElements,
+        function: () => {
+          return new Promise((resolve) => {
+            chrome.runtime.sendMessage({ action: 'extract' }, (response) => {
+              resolve(response.data);
+            });
+          });
+        }
       },
-      (injectionResults) => {
-        const prestyleElements = injectionResults[0].result;
-        const elementsTable = document.getElementById('elementsTable');
-
-        prestyleElements.forEach(element => {
-          const row = document.createElement('tr');
-          const cell = document.createElement('td');
-          cell.textContent = element;
-          row.appendChild(cell);
-          elementsTable.appendChild(row);
-        });
+      (results) => {
+        if (chrome.runtime.lastError || !results || !results[0].result) {
+          console.error(chrome.runtime.lastError);
+          return;
+        }
+        const data = results[0].result;
+        const output = document.getElementById('output');
+        output.textContent = data.map(row => `${row[0]}\t${row[1]}`).join('\n');
       }
     );
   });
 
-  document.getElementById('copyButton').addEventListener('click', function () {
-    const elementsTable = document.getElementById('elementsTable');
-    const range = document.createRange();
-    range.selectNode(elementsTable);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-    alert('Table copied to clipboard');
+  document.getElementById('copyButton').addEventListener('click', () => {
+    const output = document.getElementById('output');
+    navigator.clipboard.writeText(output.textContent).then(() => {
+      alert('Copied to clipboard!');
+    });
   });
 });
-
-function getPrestyleElements() {
-  const elements = document.querySelectorAll('.prestyle');
-  return Array.from(elements).map(element => element.textContent.trim());
-}

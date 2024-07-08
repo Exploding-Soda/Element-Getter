@@ -2,37 +2,22 @@
 <html>
 
 <head>
-  <title>Prestyle Elements Extractor</title>
+  <title>Extract Elements</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      width: 300px;
-      margin: 0;
-      padding: 10px;
+    #output {
+      white-space: pre-wrap;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    td {
-      border: 1px solid #ccc;
-      padding: 5px;
-    }
-
-    #copyButton {
+    button {
       margin-top: 10px;
-      padding: 5px 10px;
-      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
-  <h1>Elements Get & Copy</h1>
-  <button id="copyButton">Copy Table</button>
-  <table id="elementsTable"></table>
+  <h1>Extract Elements</h1>
+  <pre id="output"></pre>
+  <button id="copyButton">Copy to Clipboard</button>
   <script src="popup.js"></script>
 </body>
 
