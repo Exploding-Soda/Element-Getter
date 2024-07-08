@@ -18,14 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const data = results[0].result;
         const output = document.getElementById('output');
-        output.textContent = data.map(row => `${row[0]}\t${row[1]}`).join('\n');
+
+        let tableHtml = '<table><thead><tr><th>Column</th><th>Content</th></tr></thead><tbody>';
+        data.forEach(row => {
+          tableHtml += `<tr><td>${row[0]}</td><td class="pre-style" data-full="${row[1]}">${row[1]}</td></tr>`;
+        });
+        tableHtml += '</tbody></table>';
+        output.innerHTML = tableHtml;
       }
     );
   });
 
   document.getElementById('copyButton').addEventListener('click', () => {
     const output = document.getElementById('output');
-    navigator.clipboard.writeText(output.textContent).then(() => {
+    const rows = output.querySelectorAll('td.pre-style');
+    let copyText = '';
+    rows.forEach(row => {
+      const fullText = row.getAttribute('data-full');
+      copyText += `${fullText}\n`;
+    });
+    navigator.clipboard.writeText(copyText.trim()).then(() => {
       alert('Copied to clipboard!');
     });
   });
