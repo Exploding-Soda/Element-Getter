@@ -4,19 +4,78 @@
 <head>
   <title>Extract Elements</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #000;
+      border-bottom: 2px solid #000;
+      padding-bottom: 5px;
+    }
+
     #output {
       white-space: pre-wrap;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    td.pre-style {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
     }
 
     button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 1em;
       margin-top: 10px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    button:hover {
+      background-color: #555;
     }
   </style>
 </head>
 
 <body>
   <h1>Extract Elements</h1>
-  <pre id="output"></pre>
+  <div id="output"></div>
   <button id="copyButton">Copy to Clipboard</button>
   <script src="popup.js"></script>
 </body>
